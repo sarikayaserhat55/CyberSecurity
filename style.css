@@ -1,0 +1,983 @@
+/* ==========================================================================
+   GENEL AYARLAR (Tüm Sayfalar İçin Ortak Sıfırlamalar ve Animasyonlar)
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Elemanların genişlik/yükseklik hesaplamasına dolguları (padding) dahil eder */
+  font-family: Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth; /* Bölümler arası geçişlerde (çapa linklerinde) yumuşak kayma animasyonu sağlar */
+}
+
+body {
+  overflow-x: hidden; /* Yatayda kaydırma çubuğu oluşmasını engeller */
+  margin: 0;
+  background: #0b1220; /* Siber güvenlik konseptine uygun koyu mavi/lacivert arka plan */
+  color: white; /* Varsayılan metin rengini beyaz yapar */
+  font-family: Arial, sans-serif;
+}
+
+/* Sayfa açılışında içeriklerin bulanıklıktan netliğe, küçükten büyüğe kayarak gelmesi için modern animasyon */
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.97) translateY(35px); /* Başlangıçta hafif küçük, aşağıda ve bulanık */
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0); /* Normal boyutuna, konumuna ve netliğine gelir */
+    filter: blur(0);
+  }
+}
+
+/* ==========================================================================
+   NAVİGASYON (Üst Menü Çubuğu)
+   ========================================================================== */
+nav {
+  width: 100%;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.5); /* Hafif şeffaf siyah arka plan */
+  backdrop-filter: blur(10px); /* Arka plandaki görselleri bulanıklaştırarak modern bir cam efekti verir */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Menü linklerini yatayda ortalar */
+  padding: 0 60px;
+  position: fixed; /* Navigasyonu sayfanın üstüne sabitler */
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2); /* Alt kısma turkuaz ince bir ayırıcı çizgi ekler */
+  padding-left: 20px;
+}
+
+/* Menü Listesi */
+nav ul {
+  display: flex;
+  gap: 30px; /* Menü elemanları arasına 30px boşluk bırakır */
+  list-style: none; /* Liste işaretlerini (noktaları) kaldırır */
+}
+
+/* Menü Linkleri */
+nav ul li a {
+  color: white;
+  text-decoration: none; /* Linklerin altındaki varsayılan çizgiyi kaldırır */
+  transition: color 0.3s ease, text-shadow 0.3s ease; /* Renk ve parlama geçişinin yumuşak olmasını sağlar */
+  font-size: 18px;
+  position: relative; /* Alt çizginin konumlanabilmesi için referans */
+  padding-bottom: 5px;
+}
+
+/* Menü Linkleri Alt Çizgi Efekti (Ortadan İki Yana Genişleyen Siber Çizgi) */
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #00ffff; /* Çizgi rengi turkuaz */
+  transform: scaleX(0); /* Başlangıçta çizgi sıfır genişliktedir */
+  transform-origin: bottom right; /* Kapanırken sağa doğru kapanır */
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); /* Premium yumuşaklıkta çizgi geçişi */
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.8); /* Çizgiye neon ışıma verir */
+}
+
+/* Menü Linkinin Üzerine Gelindiğinde (Hover) */
+nav ul li a:hover {
+  color: #00ffff; /* Yazı rengini parlak turkuaz yapar */
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6); /* Yazıya siber parlama efekti verir */
+}
+
+nav ul li a:hover::after {
+  transform: scaleX(1); /* Üzerine gelince çizgi tam genişliğe ulaşır */
+  transform-origin: bottom left; /* Açılırken soldan sağa doğru açılır */
+}
+
+/* Aktif Menü Linkinin Alt Çizgisini Açık Tutma */
+nav ul li a.active {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+nav ul li a.active::after {
+  transform: scaleX(1); /* Aktif linkin alt çizgisi daima görünecektir */
+  transform-origin: center;
+}
+
+/* Logo Stili (Tıklanabilir Logo Alanı) */
+.logo {
+  left: 40px; /* Logoyu sol kenardan 40px içeri kaydırır */
+  position: absolute; /* Logoyu menü akışından çıkarıp sola sabitlemek için absolute yapıldı */
+  font-size: 30px;
+  font-weight: bold;
+  color: #00ffff; /* Parlak turkuaz siber güvenlik rengi */
+  text-shadow: 0 0 25px cyan; /* Logoya güçlü bir siber parlama efekti verir */
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  text-shadow: 0 0 35px cyan, 0 0 10px white; /* Logo üzerine gelince parlama gücü artar */
+}
+
+/* ==========================================================================
+   ANA SAYFA - HERO (Giriş/Karşılama Alanı)
+   ========================================================================== */
+.hero {
+  width: 100%;
+  height: 100vh; /* Ekranın tüm yüksekliğini kaplar */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), /* Resmin üzerine koyu katman ekleyerek metinleri okunur yapar */
+    url("outsourcing.jpeg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center; /* İçeriği yatayda ortalar */
+  align-items: center; /* İçeriği dikeyde ortalar */
+  position: relative;
+}
+
+/* Hero İçerik Alanı (Başlık, Açıklama ve Butonun bulunduğu kutu) */
+.hero-content {
+  text-align: center; /* Tüm metinleri ve butonu ortalar */
+  max-width: 800px;
+  padding: 0 20px;
+  z-index: 2;
+  animation: pageFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; /* Apple tarzı yumuşatılmış sayfa giriş animasyonu */
+}
+
+/* Hero Başlığı (SİBER GÜVENLİK) */
+.hero-content h1 {
+  font-size: 52px;
+  font-weight: bold;
+  letter-spacing: 2px; /* Harfler arasındaki mesafeyi açar */
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Başlığa siber parlama efekti verir */
+}
+
+/* Hero Açıklama Metni */
+.hero-content p {
+  font-size: 20px;
+  color: #cbd5e0; /* Gözü yormayan yumuşak gri/beyaz renk */
+  margin-bottom: 40px;
+  line-height: 1.6; /* Satırlar arası boşluğu artırarak okumayı kolaylaştırır */
+}
+
+/* Keşfet Buton Linki */
+.hero-content a {
+  text-decoration: none;
+}
+
+/* Keşfet Butonu */
+.hero-content button {
+  background: #00ffff; /* Buton arka planını parlak turkuaz yapar */
+  color: #0b1220; /* Yazı rengini koyu lacivert yapar */
+  border: 2px solid #00ffff; /* Kenarlara turkuaz çizgi ekler */
+  padding: 14px 36px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 6px; /* Buton köşelerini hafifçe yuvarlar */
+  cursor: pointer; /* Üzerine gelince fare imlecini el işareti yapar */
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); /* Butonun etrafına hafif ışık yayar */
+  transition: all 0.3s ease; /* Tüm efektlerin yumuşak geçişli olmasını sağlar */
+}
+
+/* Keşfet Butonu Hover (Üzerine Gelme) Efekti */
+.hero-content button:hover {
+  background: transparent; /* Arka planı şeffaf yapar */
+  color: #00ffff; /* Yazıyı turkuaz yapar */
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.7); /* Parlama gücünü artırır */
+  transform: translateY(-3px); /* Butonu hafifçe yukarı doğru hareket ettirir */
+}
+
+/* ==========================================================================
+   HAKKIMIZDA SAYFASI
+   ========================================================================== */
+.about-container {
+  width: 100%;
+  min-height: 100vh; /* Ekranın en az tüm yüksekliğini kaplar */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), /* Hero bölümüyle aynı koyulukta üst katman filtresi */
+    url("outsourcing.jpeg"); /* Ana sayfayla görsel uyum için aynı arka plan resmi kullanıldı */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column; /* İçerikleri dikey olarak alt alta sıralar */
+  justify-content: center; /* İçeriği dikey eksende ortalar */
+  align-items: center; /* İçeriği yatay eksende ortalar */
+  text-align: center; /* Metinlerin tamamını ortalar */
+  padding: 120px 20px 60px 20px; /* Üstteki sabit (fixed) navigasyon çubuğunun altında kalmaması için 120px üst boşluk verildi */
+  animation: pageFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; /* Apple tarzı yumuşatılmış sayfa giriş animasyonu */
+}
+
+/* Hakkımızda Sayfa Başlığı */
+.about-container h1 {
+  font-size: 52px;
+  font-weight: bold;
+  color: #ffffff; /* Yazı beyaz */
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Başlığa siber parlama efekti verir */
+}
+
+/* Hakkımızda Paragrafları */
+.about-container p {
+  font-size: 20px;
+  line-height: 1.8; /* Okumayı kolaylaştırmak için satır aralığı geniş */
+  color: #cbd5e0; /* Hero p rengi ile aynı yumuşak gri */
+  max-width: 800px; /* Metnin çok genişleyip okunurluğunu bozmasını engeller */
+  margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   ÖĞREN SAYFASI (learn.html İçerik Alanı ve Kart Tasarımları)
+   ========================================================================== */
+.learn-container {
+  width: 100%;
+  min-height: 100vh; /* Ekran yüksekliğinin tamamını kaplar */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), /* Görselin üzerindeki koyu katman */
+    url("outsourcing.jpeg"); /* Ana sayfa ve hakkında sayfası ile ortak arka plan resmi */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* İçeriklerin üstten başlayıp aşağıya doğru sıralanması için */
+  align-items: center;
+  text-align: center;
+  padding: 120px 20px 60px 20px; /* Üstteki navigasyon çubuğunun altında kalmamak için 120px üst boşluk */
+  animation: pageFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; /* Sayfa açılış animasyonu */
+}
+
+/* Öğren Sayfası Ana Başlığı */
+.learn-title {
+  font-size: 52px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Neon turkuaz parlama efekti */
+}
+
+/* Öğren Sayfası Alt Bilgilendirme Başlığı */
+.learn-subtitle {
+  font-size: 20px;
+  color: #cbd5e0;
+  max-width: 800px;
+  margin-bottom: 45px;
+  line-height: 1.6;
+}
+
+/* Kartların Yerleştiği Esnek Izgara (Grid) Yapısı */
+.learn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Cihaz ekranına göre otomatik sütun sayısı belirler */
+  gap: 30px; /* Kartlar arasındaki dikey ve yatay boşluk */
+  width: 100%;
+  max-width: 1200px; /* Büyük ekranlarda kartların aşırı yayılıp bozulmasını önler */
+  padding: 0 20px;
+}
+
+/* Eğitim Kartları */
+.learn-card {
+  background: rgba(255, 255, 255, 0.03); /* Cam efekti için çok hafif beyaz şeffaf arka plan */
+  border: 1px solid rgba(0, 255, 255, 0.1); /* İnce neon sınır çizgisi */
+  border-radius: 12px; /* Kart köşelerini yumuşatır */
+  padding: 30px;
+  display: flex;
+  flex-direction: column; /* Kart içeriğini dikey sıralar */
+  align-items: center;
+  text-align: center;
+  backdrop-filter: blur(8px); /* Kartın arkasında kalan resmi hafifçe bulanıklaştırır */
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Üzerine gelindiğindeki animasyonların yumuşak geçişi */
+}
+
+/* Kart İkonları (Emoji Alanı) */
+.card-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4)); /* İkona hafif turkuaz ışıma verir */
+  transition: transform 0.3s ease;
+}
+
+/* Kart Başlıkları */
+.learn-card h2 {
+  font-size: 22px;
+  color: #00ffff; /* Kart başlıklarını turkuaz yapar */
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+/* Kart Açıklama Metinleri */
+.learn-card p {
+  font-size: 15px;
+  color: #cbd5e0; /* Okunabilir gri tonu */
+  line-height: 1.6;
+  margin-bottom: 25px;
+  flex-grow: 1; /* Metnin kart boyutuna göre esneyip butonları aynı hizaya sabitlemesini sağlar */
+}
+
+/* Kart Butonları */
+.card-btn {
+  background: transparent; /* Varsayılan şeffaf arka plan */
+  border: 1px solid rgba(0, 255, 255, 0.4); /* Yarı şeffaf turkuaz kenarlık */
+  color: #00ffff; /* Turkuaz yazı rengi */
+  padding: 10px 24px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%; /* Kartı tamamen kaplayacak genişlikte */
+}
+
+/* Kart Butonu Hover (Üzerine Gelindiğinde) */
+.card-btn:hover {
+  background: #00ffff; /* Buton içi turkuaz dolgu olur */
+  color: #0b1220; /* Yazı koyu laciverte döner */
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Neon parlama */
+  transform: translateY(-2px); /* /Hafifçe yukarı kalkar */
+}
+
+/* Kartların Hover (Üzerine Gelindiğinde) Etkileşimi */
+.learn-card:hover {
+  transform: translateY(-8px); /* Kartı 8px yukarı kaldırarak derinlik hissi verir */
+  border-color: rgba(0, 255, 255, 0.4); /* Kenar çizgisi daha belirgin turkuaz olur */
+  box-shadow: 0 12px 30px rgba(0, 255, 255, 0.15); /* Güçlü bir neon alt gölge verir */
+  background: rgba(255, 255, 255, 0.05); /* Kart arka planı hafifçe aydınlanır */
+}
+
+/* Kart Üzerine Gelindiğinde İkonun Hareketlenmesi */
+.learn-card:hover .card-icon {
+  transform: scale(1.15) rotate(5deg); /* İkonu büyütür ve 5 derece döndürür */
+}
+
+/* ==========================================================================
+   SALDIRILAR SAYFASI (attacks.html İçerik Alanı ve SOC Terminali)
+   ========================================================================== */
+.attacks-container {
+  width: 100%;
+  min-height: 100vh; /* Ekran yüksekliğinin tamamını kaplar */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), /* Görselin üzerindeki koyu katman */
+    url("outsourcing.jpeg"); /* Ana sayfa, hakkında ve öğren sayfalarıyla ortak arka plan resmi */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding: 120px 20px 60px 20px; /* Navigasyon çubuğu alt boşluğu */
+  animation: pageFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; /* Sayfa giriş animasyonu */
+}
+
+/* Saldırılar Sayfası Ana Başlığı */
+.attacks-title {
+  font-size: 52px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+/* Saldırılar Sayfası Alt Bilgi Başlığı */
+.attacks-subtitle {
+  font-size: 20px;
+  color: #cbd5e0;
+  max-width: 800px;
+  margin-bottom: 45px;
+  line-height: 1.6;
+}
+
+/* Basitleştirilmiş Siber Konsol Kutusu */
+.terminal-box {
+  width: 100%;
+  max-width: 800px;
+  min-height: 160px;
+  background: #080d1a; /* Sade, koyu lacivert/siyah arka plan */
+  border: 1px solid rgba(0, 255, 255, 0.2); /* İnce siber neon çerçeve */
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 255, 255, 0.05); /* Çok hafif siber neon gölge */
+  margin-bottom: 50px;
+  padding: 20px 25px; /* Metin dolgusu */
+  text-align: left;
+  font-family: 'Courier New', Courier, monospace; /* Terminal tarzı tek aralıklı yazı tipi */
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-y: auto;
+}
+
+/* Terminal Log Satırları */
+.log-line {
+  margin-bottom: 8px;
+}
+.log-line.text-red { color: #ff3366; } /* Kritik Hata/Sonuç Rengi */
+.log-line.text-yellow { color: #ffbd2e; } /* Uyarı/Süreç Rengi */
+.log-line.text-green { color: #27c93f; } /* Başarılı/Önlem Rengi */
+
+/* Terminal Bekleme İmleci Yanıp Sönme Animasyonu */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+.log-line.blink::after {
+  content: "_";
+  animation: cursorBlink 1s infinite; /* Sonsuz yanıp sönme */
+  color: #00ffff;
+}
+
+/* Saldırılar Kart Izgarası (Grid) Yapısı */
+.attacks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+/* Saldırı Bilgi Kartı */
+.attacks-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Kartın Üst Kısmındaki Etiket Grubu */
+.badge-row {
+  display: flex;
+  justify-content: space-between; /* Etiketleri iki uca açar */
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Etiketler (Badge) Genel Tasarımı */
+.badge {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* Kategori Etiketi */
+.badge-category {
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffff;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+/* Kritik Derece Etiketi */
+.badge-critical {
+  background: rgba(255, 51, 102, 0.15);
+  color: #ff3366;
+  border: 1px solid rgba(255, 51, 102, 0.4);
+}
+
+/* Yüksek Derece Etiketi */
+.badge-high {
+  background: rgba(255, 189, 46, 0.15);
+  color: #ffbd2e;
+  border: 1px solid rgba(255, 189, 46, 0.4);
+}
+
+/* Orta Derece Etiketi */
+.badge-medium {
+  background: rgba(39, 201, 63, 0.15);
+  color: #27c93f;
+  border: 1px solid rgba(39, 201, 63, 0.4);
+}
+
+/* Kartların Hover (Üzerine Gelindiğinde) Etkileşimi */
+.attacks-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.attacks-card:hover .card-icon {
+  transform: scale(1.15) rotate(5deg);
+}
+
+/* Saldırı Kartı İçeriği p, h2 ve buton stilleri */
+.attacks-card h2 {
+  font-size: 22px;
+  color: #00ffff;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.attacks-card p {
+  font-size: 15px;
+  color: #cbd5e0;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  flex-grow: 1;
+}
+
+/* ==========================================================================
+   SALDIRILAR EKRANA SIĞDIRMA VE DASHBOARD DÜZENİ (Genel & Medya Sorgusu)
+   ========================================================================== */
+.attacks-dashboard-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Geniş Ekranlar İçin Yan Yana Çift Panel Düzeni */
+@media (min-width: 1024px) {
+  .attacks-container {
+    height: 100vh; /* Dikey yüksekliği tam ekrana kilitler */
+    overflow: hidden; /* Dış dikey kaydırmayı engeller */
+    padding: 100px 40px 30px 40px; /* Üst ve alt dolguları optimize eder */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .attacks-title {
+    font-size: 38px; /* Başlık boyutunu daraltır */
+    margin-bottom: 5px;
+  }
+  
+  .attacks-subtitle {
+    font-size: 16px; /* Alt başlık boyutunu daraltır */
+    margin-bottom: 20px;
+  }
+  
+  .attacks-dashboard-wrapper {
+    flex-direction: row; /* Elemanları yan yana koyar */
+    align-items: stretch; /* Dikey boyutlarını eşitleer */
+    height: calc(100vh - 240px); /* Kalan ekran yüksekliğini kaplar */
+    margin-top: 10px;
+  }
+
+  .attacks-left-panel {
+    flex: 1; /* Sol panel (Konsol) */
+    display: flex;
+    flex-direction: column;
+    min-width: 380px;
+    max-width: 440px;
+  }
+
+  .attacks-right-panel {
+    flex: 1.6; /* Sağ panel (Kartlar) */
+    overflow-y: auto; /* Sadece kartlar panelinin kendi içinde kaymasını sağlar */
+    padding-right: 10px;
+    height: 100%;
+  }
+
+  .attacks-grid {
+    grid-template-columns: repeat(2, 1fr); /* Kartları 2 sütunda kompakt listeler */
+    gap: 15px; /* Kartlar arası boşluğu daraltır */
+    padding: 0;
+  }
+
+  .terminal-box {
+    flex-grow: 1; /* Konsol kutusu panel boyutu kadar dikey esner */
+    margin-bottom: 0;
+    height: 100%;
+  }
+
+  .attacks-card {
+    padding: 20px; /* Kart dolgularını daraltır */
+  }
+
+  .attacks-card h2 {
+    font-size: 18px; /* Kart başlığını küçültür */
+    margin-bottom: 10px;
+  }
+
+  .attacks-card p {
+    font-size: 13.5px; /* Kart metnini küçültür */
+    margin-bottom: 15px;
+  }
+}
+
+/* ==========================================================================
+   EĞİTİM MODAL BİLEŞENLERİ (learn.html)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11, 18, 32, 0.85); /* Koyu şeffaf arka plan */
+  backdrop-filter: blur(8px); /* Arka plandaki elemanları bulanıklaştırır */
+  display: none; /* JavaScript tetikleyene kadar gizlidir */
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* Her elemanın üstünde görünmesini garanti eder */
+  animation: modalFadeIn 0.3s ease both;
+}
+
+.modal-box {
+  background: #0e1626; /* Koyu lacivert siber kart rengi */
+  border: 2px solid #00ffff; /* Neon turkuaz çerçeve */
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.25);
+  animation: modalScaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.modal-box h2 {
+  font-size: 30px;
+  color: #00ffff;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+}
+
+.modal-box p {
+  font-size: 16px;
+  color: #cbd5e0;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+/* Modal Kapat Butonu */
+.modal-close-btn {
+  background: #ff3366; /* Siber pembe/kırmızı buton dolgusu */
+  color: white;
+  border: 2px solid #ff3366;
+  padding: 10px 30px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);
+  transition: all 0.3s ease;
+}
+
+.modal-close-btn:hover {
+  background: transparent;
+  color: #ff3366;
+  box-shadow: 0 0 25px rgba(255, 51, 102, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Modal Açılış Animasyonları */
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   ŞİFRE ANALİZ SAYFASI STİLLERİ (password.html)
+   ========================================================================== */
+.password-container {
+  width: 100%;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    url("outsourcing.jpeg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 20px 60px 20px;
+  animation: pageFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.password-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.password-title {
+  font-size: 38px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.password-subtitle {
+  font-size: 16px;
+  color: #cbd5e0;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+/* Şifre Giriş Alanı ve Gizle/Göster Buton Kılıfı */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.password-input {
+  width: 100%;
+  background: #080d1a;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 14px 50px 14px 18px; /* Sağdaki buton için boşluk bırakır */
+  font-size: 16px;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.password-input:focus {
+  border-color: #00ffff;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+}
+
+/* Şifre Gizleme/Gösterme Butonu */
+.toggle-btn {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #00ffff;
+  outline: none;
+}
+
+/* Güç Ölçer Çubuğu Konteyneri */
+.strength-meter-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+/* Şifre Güç Çubuğu (Genişlik ve arka plan rengi JS ile değişir) */
+.strength-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.strength-text {
+  font-size: 15px;
+  font-weight: bold;
+  color: #cbd5e0;
+  margin-bottom: 25px;
+}
+
+/* Kırılma Süresi Bildirim Kutusu */
+.crack-time-box {
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.crack-time-value {
+  font-weight: bold;
+  color: #00ffff;
+}
+
+/* Kontrol Listesi Yapısı */
+.password-requirements {
+  list-style: none;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.req-item {
+  font-size: 14.5px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+/* Durum Simgeleri (CSS ile Otomatik Prepend Edilir) */
+.req-item::before {
+  margin-right: 12px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Şifre Kuralı Geçerli Durumu (Yeşil tik) */
+.req-item.valid {
+  color: #27c93f;
+}
+.req-item.valid::before {
+  content: "✓";
+}
+
+/* Şifre Kuralı Geçersiz Durumu (Kırmızı çarpı) */
+.req-item.invalid {
+  color: #ff3366;
+}
+.req-item.invalid::before {
+  content: "✗";
+}
+
+/* ==========================================================================
+   TOPLULUK SAYFASI STİLLERİ (community.html)
+   ========================================================================== */
+.community-container {
+  width: 100%;
+  height: 100vh; /* Topluluk sayfasını ekrana sığdırmak için 100vh olarak kilitlendi */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    url("outsourcing.jpeg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* İçerikleri dikey eksende tam ortalar */
+  align-items: center;
+  text-align: center;
+  padding: 120px 20px 60px 20px;
+  overflow: hidden; /* Dikey kaydırmayı tamamen engeller */
+  animation: pageFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.community-title {
+  font-size: 52px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.community-subtitle {
+  font-size: 20px;
+  color: #cbd5e0;
+  max-width: 800px;
+  margin-bottom: 45px;
+  line-height: 1.6;
+}
+
+/* Haber Bülteni Kayıt Paneli */
+.newsletter-box {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 35px;
+  margin-bottom: 0px; /* Alttaki margin sıfırlandı */
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.newsletter-box h2 {
+  font-size: 24px;
+  color: #00ffff;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.newsletter-box p {
+  font-size: 15px;
+  color: #cbd5e0;
+  margin-bottom: 25px;
+}
+
+/* Kayıt Formu */
+.newsletter-form {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 15px auto;
+}
+
+.newsletter-input {
+  flex: 1;
+  background: #080d1a;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 12px 18px;
+  font-size: 15px;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.newsletter-input:focus {
+  border-color: #00ffff;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.newsletter-btn {
+  background: #00ffff;
+  color: #0b1220;
+  border: 2px solid #00ffff;
+  padding: 12px 30px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.newsletter-btn:hover {
+  background: transparent;
+  color: #00ffff;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+  transform: translateY(-2px);
+}
+
+/* Abonelik Başarılı Mesajı */
+.subscription-status {
+  font-size: 14.5px;
+  font-weight: bold;
+  display: none;
+  margin-top: 15px;
+}
+
+.subscription-status.success {
+  display: block;
+  color: #27c93f;
+  animation: pageFadeIn 0.3s ease both;
+}
