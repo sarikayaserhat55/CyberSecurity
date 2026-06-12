@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSecurity - Öğren</title>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">CyberSecurity</a>
+
+            <ul>
+                <li><a href="index.html">Ana Menü</a></li>
+                <li><a href="about.html">Hakkında</a></li>
+                <li><a href="learn.html" class="active">Öğren</a></li>
+                <li><a href="attacks.html">Saldırılar</a></li>
+                <li><a href="password.html">Şifre Analizi</a></li>
+                <li><a href="community.html">Topluluk</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Metin ve başlıklar sadeleştirildi -->
+    <section class="learn-container">
+        <h1 class="learn-title">SİBER EĞİTİM</h1>
+        <p class="learn-subtitle">
+            Dijital dünyada güvende kalmanız için temel eğitim başlıkları.
+        </p>
+
+        <div class="learn-grid">
+            
+            <!-- 1. Kart: Temel Güvenlik -->
+            <div class="learn-card">
+                <div class="card-icon">🔒</div>
+                <h2>Temel Güvenlik</h2>
+                <p>
+                    Güçlü şifreler, iki aşamalı doğrulama (MFA) ve dijital kimlik güvenliği.
+                </p>
+                <button class="card-btn" onclick="openLearnModal('basic')">İncele</button>
+            </div>
+
+            <!-- 2. Kart: Ağ Güvenliği -->
+            <div class="learn-card">
+                <div class="card-icon">🌐</div>
+                <h2>Ağ Güvenliği</h2>
+                <p>
+                    VPN kullanımı, güvenlik duvarı (Firewall) ve güvenli veri aktarımı.
+                </p>
+                <button class="card-btn" onclick="openLearnModal('network')">İncele</button>
+            </div>
+
+            <!-- 3. Kart: Zararlı Yazılımlar -->
+            <div class="learn-card">
+                <div class="card-icon">🦠</div>
+                <h2>Zararlı Yazılımlar</h2>
+                <p>
+                    Virüsler, truva atları ve fidye yazılımları (Ransomware).
+                </p>
+                <button class="card-btn" onclick="openLearnModal('malware')">İncele</button>
+            </div>
+
+            <!-- 4. Kart: Sosyal Mühendislik -->
+            <div class="learn-card">
+                <div class="card-icon">🎣</div>
+                <h2>Sosyal Mühendislik</h2>
+                <p>
+                    Oltalama (Phishing) yöntemleri ve manipülasyon teknikleri.
+                </p>
+                <button class="card-btn" onclick="openLearnModal('phishing')">İncele</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Siber Detay Modal Penceresi -->
+    <div id="learn-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h2 id="modal-title">Konu Başlığı</h2>
+            <p id="modal-desc">Detaylı açıklama...</p>
+            <button class="modal-close-btn" onclick="closeLearnModal()">Kapat</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSecurity - Saldırılar</title>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">CyberSecurity</a>
+
+            <ul>
+                <li><a href="index.html">Ana Menü</a></li>
+                <li><a href="about.html">Hakkında</a></li>
+                <li><a href="learn.html">Öğren</a></li>
+                <li><a href="attacks.html" class="active">Saldırılar</a></li>
+                <li><a href="password.html">Şifre Analizi</a></li>
+                <li><a href="community.html">Topluluk</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Metinler sadeleştirilerek ekran sığdırma düzeni korundu -->
+    <section class="attacks-container">
+        <h1 class="attacks-title">SİBER SALDIRILAR</h1>
+        <p class="attacks-subtitle">
+            Simülasyon sistemleri üzerinden tehdit analizleri.
+        </p>
+
+        <div class="attacks-dashboard-wrapper">
+            
+            <!-- Sol Panel: Simülasyon Çıktı Konsolu -->
+            <div class="attacks-left-panel">
+                <div class="terminal-box" id="terminal-console">
+                    <p class="log-line text-green">[BAĞLANTI] Simülasyon sistemi hazır. Başlatmak için kartlardaki "Simüle Et" butonlarına tıklayın.</p>
+                </div>
+            </div>
+
+            <!-- Sağ Panel: Kompakt Saldırı Kartları Izgarası (2x2 Düzeni) -->
+            <div class="attacks-right-panel">
+                <div class="attacks-grid">
+                    
+                    <!-- 1. Kart: DDoS -->
+                    <div class="attacks-card">
+                        <div class="badge-row">
+                            <span class="badge badge-category">AĞ</span>
+                            <span class="badge badge-high">YÜKSEK</span>
+                        </div>
+                        <div class="card-icon">💥</div>
+                        <h2>DDoS</h2>
+                        <p>
+                            Botnet ağları üzerinden sunucuyu istek yağmuruna tutarak çökertme saldırısı.
+                        </p>
+                        <button class="card-btn" onclick="startSimulation('ddos')">Simüle Et</button>
+                    </div>
+
+                    <!-- 2. Kart: SQL Injection -->
+                    <div class="attacks-card">
+                        <div class="badge-row">
+                            <span class="badge badge-category">WEB</span>
+                            <span class="badge badge-critical">KRİTİK</span>
+                        </div>
+                        <div class="card-icon">💉</div>
+                        <h2>SQL Injection</h2>
+                        <p>
+                            Veri giriş alanlarına kod sızdırarak veritabanına yetkisiz erişim sağlama.
+                        </p>
+                        <button class="card-btn" onclick="startSimulation('sql')">Simüle Et</button>
+                    </div>
+
+                    <!-- 3. Kart: Phishing -->
+                    <div class="attacks-card">
+                        <div class="badge-row">
+                            <span class="badge badge-category">SOSYAL</span>
+                            <span class="badge badge-medium">ORTA</span>
+                        </div>
+                        <div class="card-icon">🎣</div>
+                        <h2>Phishing</h2>
+                        <p>
+                            Sahte web sayfaları ve e-postalar aracılığıyla şifre ele geçirme.
+                        </p>
+                        <button class="card-btn" onclick="startSimulation('phishing')">Simüle Et</button>
+                    </div>
+
+                    <!-- 4. Kart: Brute Force -->
+                    <div class="attacks-card">
+                        <div class="badge-row">
+                            <span class="badge badge-category">SİSTEM</span>
+                            <span class="badge badge-medium">ORTA</span>
+                        </div>
+                        <div class="card-icon">🔑</div>
+                        <h2>Brute Force</h2>
+                        <p>
+                            Yazılımlarla binlerce parola kombinasyonu deneyerek sisteme sızma.
+                        </p>
+                        <button class="card-btn" onclick="startSimulation('brute')">Simüle Et</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+</body>
+</html>
